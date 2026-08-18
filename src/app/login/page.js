@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -14,6 +14,14 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // ✅ Agar user pehle se logged in hai toh Home Page par bhej do
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/");
+    }
+  }, [router]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -24,8 +32,8 @@ export default function LoginPage() {
     setError("");
 
     try {
-      // ✅ Relative path use kiya taake Vercel rewrites kaam karein
-      const res = await fetch("/api/auth/login", {
+      // ✅ Direct backend URL pass kar diya
+      const res = await fetch("https://car-rental-website-backend.vercel.app/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -38,17 +46,17 @@ export default function LoginPage() {
       const data = await res.json();
 
       // ✅ 1. Token Save karein
-      localStorage.setItem("token", data.access_token);
-
-      // ✅ 2. User ID Save karein
-      if (data.user_id) {
-        localStorage.setItem("userId", data.user_id);
+      if (data.access_token || data.token) {
+        localStorage.setItem("token", data.access_token || data.token);
       }
 
-      alert("Login Successful!");
+      // ✅ 2. User ID Save karein
+      if (data.user_id || data.user?.id) {
+        localStorage.setItem("userId", data.user_id || data.user?.id);
+      }
 
-      // Dashboard par redirect
-      router.push("/dashboard");
+      // ✅ 3. Home Page (`/`) par redirect karein
+      router.push("/");
 
     } catch (err) {
       setError(err.message);
