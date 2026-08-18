@@ -22,17 +22,28 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const mobileMenuRef = useRef(null);
 
-  // Fetch user on mount
+  // Fetch user on mount and pathname change
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
+
     if (token && userId) {
-      fetch(`https://car-rental-website-backend.vercel.app/auth/profile/${userId}`)
+      fetch(`https://car-rental-website-backend.vercel.app/auth/profile/${userId}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
         .then((res) => { if (res.ok) return res.json(); throw new Error("Failed"); })
         .then((data) => setUser(data))
-        .catch(() => setUser(null));
+        .catch(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+          setUser(null);
+        });
+    } else {
+      setUser(null);
     }
-  }, []);
+  }, [pathname]);
 
   // Scroll listener for transparent → solid transition
   useEffect(() => {
@@ -116,8 +127,8 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     className={`relative px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 group ${isActive
-                        ? "text-white bg-white/10"
-                        : "text-gray-300 hover:text-white hover:bg-white/8"
+                      ? "text-white bg-white/10"
+                      : "text-gray-300 hover:text-white hover:bg-white/8"
                       }`}
                   >
                     {link.label}
@@ -210,8 +221,8 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`block px-4 py-3 rounded-xl text-base font-semibold transition-colors ${isActive
-                    ? "text-white bg-blue-600/20 text-blue-400"
-                    : "text-gray-300 hover:text-white hover:bg-white/8"
+                  ? "text-white bg-blue-600/20 text-blue-400"
+                  : "text-gray-300 hover:text-white hover:bg-white/8"
                   }`}
               >
                 {link.label}
