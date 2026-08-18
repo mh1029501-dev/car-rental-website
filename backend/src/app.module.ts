@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { User } from './auth/user.entity';
-
-
 import { CarsModule } from './cars/cars.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { ContactModule } from './contact/contact.module';
@@ -12,24 +9,17 @@ import { ContactModule } from './contact/contact.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'hammad224', 
-      database: 'car_rental_db',
-      
-      
-      autoLoadEntities: true, 
-      synchronize: true,
+      url: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      autoLoadEntities: true,
+      synchronize: true, // Deploy test hone ke baad isey false kar sakty hain
     }),
     AuthModule,
-    
-    
     CarsModule,
-    
     BookingsModule,
-    
-    ContactModule, 
+    ContactModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
