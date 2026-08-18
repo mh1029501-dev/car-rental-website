@@ -1,11 +1,11 @@
-"use client"; 
+"use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
-  
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -24,8 +24,8 @@ export default function LoginPage() {
     setError("");
 
     try {
-      // Port 3001 Backend URL
-      const res = await fetch("http://localhost:3001/auth/login", {
+      // ✅ Relative path use kiya taake Vercel rewrites kaam karein
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -39,15 +39,14 @@ export default function LoginPage() {
 
       // ✅ 1. Token Save karein
       localStorage.setItem("token", data.access_token);
-      
-      // ✅ 2. User ID Save karein (YEH NEW LINE HAI)
-      // Iski zaroorat humein Profile Page par padegi
+
+      // ✅ 2. User ID Save karein
       if (data.user_id) {
         localStorage.setItem("userId", data.user_id);
       }
 
       alert("Login Successful!");
-      
+
       // Dashboard par redirect
       router.push("/dashboard");
 
