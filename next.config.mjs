@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -9,6 +8,14 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://car-rental-website-backend.vercel.app/:path*',
+      },
+    ];
   },
 };
 
