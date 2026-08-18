@@ -7,7 +7,7 @@ export default function Signup() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -17,19 +17,18 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(''); 
+    setError('');
     try {
-      const res = await fetch('http://localhost:3001/auth/signup', {
+      // ✅ Vercel rewrite ke liye relative path set kiya
+      const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      
       const data = await res.json();
 
       if (!res.ok) {
-        
         throw new Error(data.message || 'Signup failed! Please try again.');
       }
 
@@ -38,7 +37,6 @@ export default function Signup() {
 
     } catch (err) {
       console.error("Signup Error:", err);
-      
       setError(err.message);
     } finally {
       setLoading(false);
@@ -52,7 +50,6 @@ export default function Signup() {
           Sign Up
         </h2>
 
-        {/* 👇 Error Message Box */}
         {error && (
           <div className="bg-red-500 text-white p-3 rounded mb-4 text-center font-bold text-sm">
             {error}
@@ -60,13 +57,12 @@ export default function Signup() {
         )}
 
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
-          
           <div>
             <label className="block mb-1 text-gray-300">Full Name</label>
-            <input 
+            <input
               type="text"
               name="name"
-              value={formData.name} 
+              value={formData.name}
               onChange={handleChange}
               placeholder="Ali Khan"
               className="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500"
@@ -76,10 +72,10 @@ export default function Signup() {
 
           <div>
             <label className="block mb-1 text-gray-300">Email</label>
-            <input 
+            <input
               type="email"
               name="email"
-              value={formData.email} 
+              value={formData.email}
               onChange={handleChange}
               placeholder="user@example.com"
               className="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500"
@@ -89,7 +85,7 @@ export default function Signup() {
 
           <div>
             <label className="block mb-1 text-gray-300">Password</label>
-            <input 
+            <input
               type="password"
               name="password"
               value={formData.password}
@@ -100,8 +96,8 @@ export default function Signup() {
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-bold transition duration-200 mt-2"
           >
