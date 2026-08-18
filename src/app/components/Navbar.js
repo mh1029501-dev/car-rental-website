@@ -2,10 +2,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { 
-  User, 
-  LogOut, 
-  Calendar, 
+import {
+  User,
+  LogOut,
+  Calendar,
   ChevronDown,
   Menu,
   X,
@@ -15,7 +15,7 @@ import {
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  
+
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -27,7 +27,7 @@ export default function Navbar() {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     if (token && userId) {
-      fetch(`http://localhost:3001/auth/profile/${userId}`)
+      fetch(`https://car-rental-website-backend.vercel.app/auth/profile/${userId}`)
         .then((res) => { if (res.ok) return res.json(); throw new Error("Failed"); })
         .then((data) => setUser(data))
         .catch(() => setUser(null));
@@ -78,10 +78,10 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { href: "/",        label: "Home" },
+    { href: "/", label: "Home" },
     { href: "/listing", label: "Fleet" },
-    { href: "/blog",    label: "Blog" },
-    { href: "/about",   label: "About" },
+    { href: "/blog", label: "Blog" },
+    { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ];
 
@@ -115,11 +115,10 @@ export default function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`relative px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 group ${
-                      isActive
+                    className={`relative px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 group ${isActive
                         ? "text-white bg-white/10"
                         : "text-gray-300 hover:text-white hover:bg-white/8"
-                    }`}
+                      }`}
                   >
                     {link.label}
                     {isActive && (
@@ -199,9 +198,8 @@ export default function Navbar() {
       {/* MOBILE DRAWER */}
       <div
         ref={mobileMenuRef}
-        className={`md:hidden fixed top-0 left-0 right-0 z-40 bg-gray-950 border-b border-white/10 transition-all duration-300 ease-in-out ${
-          isMobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
-        }`}
+        className={`md:hidden fixed top-0 left-0 right-0 z-40 bg-gray-950 border-b border-white/10 transition-all duration-300 ease-in-out ${isMobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
+          }`}
         style={{ paddingTop: '80px' }}
       >
         <div className="px-6 py-6 space-y-1">
@@ -211,11 +209,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`block px-4 py-3 rounded-xl text-base font-semibold transition-colors ${
-                  isActive
+                className={`block px-4 py-3 rounded-xl text-base font-semibold transition-colors ${isActive
                     ? "text-white bg-blue-600/20 text-blue-400"
                     : "text-gray-300 hover:text-white hover:bg-white/8"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>

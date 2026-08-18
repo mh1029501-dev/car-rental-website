@@ -6,7 +6,7 @@ export default function BookingsPage() {
 
   useEffect(() => {
     // Backend se saari bookings mangwana
-    fetch("http://localhost:3001/bookings")
+    fetch("https://car-rental-website-backend.vercel.app/bookings")
       .then((res) => res.json())
       .then((data) => setBookings(data))
       .catch((err) => console.error(err));
@@ -15,7 +15,7 @@ export default function BookingsPage() {
   return (
     <div className="p-10">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Customer Bookings</h1>
-      
+
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="w-full text-left">
           <thead className="bg-gray-800 text-white">
@@ -39,7 +39,7 @@ export default function BookingsPage() {
                   <td className="p-4 text-blue-600 font-bold">{booking.carModel}</td>
                   <td className="p-4">${booking.price}</td>
                   <td className="p-4 text-sm">
-                    {booking.pickupDate} <br/> to {booking.dropoffDate}
+                    {booking.pickupDate} <br /> to {booking.dropoffDate}
                   </td>
                   <td className="p-4">
                     <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold">

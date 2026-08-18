@@ -17,7 +17,7 @@ export default function Dashboard() {
 
   const fetchCars = async () => {
     try {
-      const res = await fetch("http://localhost:3001/cars");
+      const res = await fetch("https://car-rental-website-backend.vercel.app/cars");
       if (res.ok) {
         const data = await res.json();
         setCars(data);
@@ -33,7 +33,7 @@ export default function Dashboard() {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:3001/cars/${id}`, {
+      const res = await fetch(`https://car-rental-website-backend.vercel.app/cars/${id}`, {
         method: "DELETE",
       });
 
@@ -68,8 +68,8 @@ export default function Dashboard() {
       <div className="bg-white p-6 rounded-lg shadow-md mb-8">
         <h2 className="text-xl font-bold mb-4">Add New Car Listing</h2>
         <p className="text-gray-600 mb-4">Click below to add a new car to the database.</p>
-        <button 
-          onClick={() => router.push('/dashboard/add')} 
+        <button
+          onClick={() => router.push('/dashboard/add')}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
         >
           + Add New Car
@@ -78,19 +78,19 @@ export default function Dashboard() {
 
       {/* --- DISPLAY LISTINGS --- */}
       <h2 className="text-2xl font-bold mb-4 text-gray-700">Your Listings</h2>
-      
+
       {cars.length === 0 ? (
         <p className="text-gray-500">No cars added yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {cars.map((car) => (
             <div key={car.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-              
+
               {/* 👇 IMAGE SECTION */}
               <div className="h-48 w-full bg-gray-200 relative">
-                <img 
-                  src={car.image || "https://via.placeholder.com/400"} 
-                  alt={car.model} 
+                <img
+                  src={car.image || "https://via.placeholder.com/400"}
+                  alt={car.model}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -100,9 +100,9 @@ export default function Dashboard() {
                 <h3 className="font-bold text-xl text-gray-800">{car.model}</h3>
                 <p className="text-blue-600 font-bold text-lg mt-1">${car.price}/day</p>
                 <p className="text-gray-600 text-sm mt-2 line-clamp-2">{car.description}</p>
-                
+
                 {/* 👇 DELETE BUTTON */}
-                <button 
+                <button
                   onClick={() => handleDelete(car.id)}
                   className="mt-4 w-full bg-red-100 text-red-600 py-2 rounded font-semibold hover:bg-red-200 transition"
                 >
